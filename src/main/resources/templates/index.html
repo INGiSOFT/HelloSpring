@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+    <body>
+        <h1 th:text="'Hello ' + ${firstName}"></h1>
+        <p th:if="${age != null}" th:text="${age < 20} ? 'You\'re young' : 'You\'re old'"></p>
+        <p>Java Version: <span th:text="${javaVersion}"></span></p>
+    </body>
+</html>
