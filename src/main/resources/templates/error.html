@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<!--/*
+    Eigene Fehlerseite.
+
+    Spring Boot zeigt automatisch ein Template namens "error.html" an, wenn
+    etwas schiefgeht - z.B. wenn eine Seite nicht existiert (404) oder im
+    Java-Code eine Exception auftritt (500). Ohne diese Datei würde die
+    schlichte Standardseite "Whitelabel Error Page" erscheinen.
+
+    Spring Boot stellt dabei automatisch u.a. diese Variablen bereit:
+      ${status}    HTTP-Statuscode, z.B. 404
+      ${path}      aufgerufene Adresse, z.B. /gibtesnicht
+      ${timestamp} Zeitpunkt des Fehlers
+      ${message}   Fehlermeldung (oft leer; wird aus Sicherheitsgründen
+                   standardmässig nicht mitgeliefert)
+
+    Zum Ausprobieren: http://localhost:8080/gibtesnicht aufrufen.
+*/-->
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Fehler</title>
+    <script th:src="@{/webjars/tailwindcss__browser/dist/index.global.js}"></script>
+</head>
+    <body class="min-h-screen bg-gradient-to-br from-rose-50 via-white to-orange-100 flex items-center justify-center p-4 text-slate-800">
+        <main class="w-full max-w-md bg-white/80 backdrop-blur rounded-2xl shadow-xl ring-1 ring-slate-200 p-8 text-center space-y-4">
+            <!--/* Grosse Statusnummer. Der Text "Fehler" ist nur ein Platzhalter, falls man die Datei direkt im Browser öffnet. */-->
+            <p class="text-7xl font-extrabold text-rose-500" th:text="${status}">Fehler</p>
+
+            <!--/*
+                Deutscher Text zum Statuscode aus messages.properties (z.B. "error.404").
+                #messages.msgOrNull liefert null, wenn es keinen Eintrag gibt;
+                ?: ("Elvis-Operator") nimmt dann den Text dahinter als Ersatz.
+            */-->
+            <h1 class="text-2xl font-bold text-slate-900" th:text="${#messages.msgOrNull('error.' + status)} ?: 'Etwas ist schiefgelaufen'">Etwas ist schiefgelaufen</h1>
+
+            <!--/* Zusätzliche Meldung nur anzeigen, wenn eine vorhanden ist */-->
+            <p th:if="${message != null and !#strings.isEmpty(message)}"
+               class="text-slate-600" th:text="${message}"></p>
+
+            <!--/* Details als Definitionsliste (dl = Liste, dt = Begriff, dd = Wert) */-->
+            <dl class="rounded-lg bg-slate-50 p-4 text-left text-sm space-y-1">
+                <div class="flex justify-between gap-4">
+                    <dt class="text-slate-500">Pfad</dt>
+                    <dd class="font-mono truncate" th:text="${path}"></dd>
+                </div>
+                <div class="flex justify-between gap-4">
+                    <dt class="text-slate-500">Zeit</dt>
+                    <!--/* #dates.format formatiert das Datum im Schweizer/deutschen Format */-->
+                    <dd class="font-mono" th:text="${#dates.format(timestamp, 'dd.MM.yyyy HH:mm:ss')}"></dd>
+                </div>
+            </dl>
+
+            <a th:href="@{/index}"
+               class="inline-block rounded-lg bg-rose-500 px-5 py-2.5 font-semibold text-white shadow hover:bg-rose-600 transition-colors">
+                Zurück zur Startseite
+            </a>
+        </main>
+    </body>
+</html>

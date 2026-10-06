@@ -1,55 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <!--
+        pom.xml = "Project Object Model": die Bauanleitung für Maven.
+        Hier steht, wie das Projekt heisst, welche Java-Version es braucht und
+        welche Bibliotheken (Dependencies) Maven herunterladen soll.
+        Nach einer Änderung in IntelliJ: Maven-Fenster -> "Reload All Maven Projects".
+    -->
     <modelVersion>4.0.0</modelVersion>
+
+    <!--
+        Das "Parent"-POM von Spring Boot gibt passende, aufeinander abgestimmte
+        Versionen für alle Spring-Bibliotheken vor. Darum steht unten bei den
+        meisten Dependencies keine <version>.
+    -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>4.1.1</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
+    <!-- Eindeutige Bezeichnung dieses Projekts: groupId (wie ein Package) + artifactId (Name) + Version -->
     <groupId>org.example</groupId>
     <artifactId>HelloSpring</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>HelloSpring</name>
-    <description>HelloSpring</description>
-    <url/>
-    <licenses>
-        <license/>
-    </licenses>
-    <developers>
-        <developer/>
-    </developers>
-    <scm>
-        <connection/>
-        <developerConnection/>
-        <tag/>
-        <url/>
-    </scm>
+    <description>Small Spring Boot / Thymeleaf Demo</description>
+
+    <!-- Benötigte Java-Version -->
     <properties>
         <java.version>25</java.version>
     </properties>
+
     <dependencies>
+        <!-- Web-Anwendung mit Spring MVC inkl. eingebautem Tomcat-Webserver (Port 8080) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webmvc</artifactId>
         </dependency>
 
+        <!-- Werkzeuge für Tests (JUnit usw.). scope=test: nur beim Testen, nicht in der fertigen Anwendung -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webmvc-test</artifactId>
             <scope>test</scope>
         </dependency>
 
+        <!-- Thymeleaf: Template-Engine, die aus den HTML-Vorlagen in src/main/resources/templates echte Seiten macht -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
             <scope>compile</scope>
         </dependency>
+
+        <!--
+            Tailwind CSS als "WebJar": Eine Web-Bibliothek (JavaScript/CSS), verpackt als
+            Java-Bibliothek. So wird sie vom eigenen Server ausgeliefert und es braucht
+            weder npm noch ein externes CDN. Erreichbar unter /webjars/...
+        -->
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>tailwindcss__browser</artifactId>
+            <version>4.3.3</version>
+        </dependency>
+
+        <!-- Hilft Spring, die Dateien in WebJars zu finden (Version muss nicht in der URL stehen) -->
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>webjars-locator-lite</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            <!-- Ermöglicht "./mvnw spring-boot:run" und baut eine ausführbare JAR-Datei ("./mvnw package") -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
